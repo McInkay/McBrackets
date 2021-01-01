@@ -1,3 +1,5 @@
+import Bracket from "./components/Bracket";
+import "tailwindcss/tailwind.css";
 
 function App() {
   return (
@@ -5,6 +7,9 @@ function App() {
       <header className="App-header">
         McBrackets
       </header>
+      <main>
+        <Bracket></Bracket>
+      </main>
     </div>
   );
 }
