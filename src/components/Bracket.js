@@ -1,17 +1,55 @@
-import Match from "./Match";
+import RoundPart from "./RoundPart";
 
-function Bracket() {
+class Bracket {
+
+  constructor(winner, final) {
+    this.winner = winner;
+    this.final = final;
+  }
+  
+};
+
+class Node {
+  constructor(leftTeam, rightTeam, leftMatch, rightMatch) {
+    this.leftTeam = leftTeam;
+    this.rightTeam = rightTeam;
+    this.leftMatch = leftMatch;
+    this.rightMatch = rightMatch;
+  }
+}
+
+function BracketView() {
+  const bracket = new Bracket(
+    "Meltan", 
+    new Node("Meltan", "Charizard", 
+      new Node("Meltan", "Greninja",
+        new Node("Bulbasaur", "Meltan",
+          new Node("Bulbasaur", "Snivy"),
+          new Node("Meltan", "Torkoal")
+        ),
+        new Node("Greninja", "Bunnelby",
+          new Node("Greninja", ""),
+          new Node("", "Bunnelby")
+        )
+      ), 
+      new Node("Charizard", "Pikachu",
+        new Node("Charizard", "Ivysaur",
+          new Node("Charizard", ""),
+          new Node("", "Ivysaur")
+        ),
+        new Node("Volcarona", "Pikachu",
+          new Node("Volcarona", ""),
+          new Node("", "Pikachu")
+        )
+      )
+    )
+  );
+
   return (
     <div className="bracket">
-      <Match team1={"Pikachu"} team2={"Charizard"}></Match>
-      <Match team1={"Greninja"} team2={"Lucario"}></Match>
-      <Match team1={"Meltan"} team2={"Bulbasaur"}></Match>
-      <Match team1={"Toxtricity"} team2={"Cosmoem"}></Match>
-      <Match team1={"Charizard"} team2={"Greninja"}></Match>
-      <Match team1={"Meltan"} team2={""}></Match>
-      <Match team1={"Charizard"} team2={"Meltan"}></Match>
+      <RoundPart level={0} node={bracket.final}></RoundPart>
     </div>
   );
 }
 
-export default Bracket;
+export default BracketView;
