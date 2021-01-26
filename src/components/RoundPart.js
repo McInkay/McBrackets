@@ -1,11 +1,10 @@
 import Match from "./Match";
 import tw from "tailwind-styled-components";
 
-const RoundNames = ["final", "semi-final", "quarter-final", "round-of-16"];
-
 const Container = tw.div`
   grid
   grid-cols-5
+  h-50v
 `;
 
 function RoundPart({bracket}) {
@@ -13,8 +12,8 @@ function RoundPart({bracket}) {
     <Container>
       {bracket.map((round, level) => (
         <>
-          {round.map((match, roundOrder) => (
-            <Match team1={match[0]} team2={match[1]} level={level} roundOrder={roundOrder} />
+          {round.map((match, roundorder) => (
+            <Match team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} />
           ))}
         </>
       ))}
