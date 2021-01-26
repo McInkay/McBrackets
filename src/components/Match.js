@@ -7,11 +7,15 @@ const Container = tw.div`
     justify-start
     flex-col
     w-full
+    ${(props) => `col-start-${1 + props.level}`}
+    ${(props) => `row-start-${1 + ((props.level + 1) * props.roundOrder)}`}
+    ${(props) => `row-span-${props.level * 2}`}
+    self-center
 `;
 
-function Match({team1, team2}) {
+function Match({team1, team2, level, roundOrder}) {
   return (
-    <Container className="match">
+    <Container className="match" level={level} roundOrder={roundOrder}>
       <Team name={team1}></Team>
       <Team name={team2}></Team>
     </Container>
