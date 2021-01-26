@@ -9,9 +9,9 @@ const Container = tw.div`
     justify-start
     flex-col
     w-full
-    ${({level, roundorder, total}) => `col-start-${roundorder < total / 2 ? 1 + level : 5 - level}`}
+    ${({level, roundorder, total}) => `col-start-${roundorder < total / 2 ? 1 + level : 7 - level}`}
     ${({level, roundorder, total}) => `row-start-${roundorder < total / 2 ? 1 + ((level + 1) * roundorder) : 1 + ((level + 1) * (roundorder - (total / 2)))}`}
-    ${({level}) => `row-span-${level < 2 ? level * 2 : 2}`}
+    ${({level}) => `row-span-${level < 2 ? level * 2 : 4}`}
     self-center
 `;
 
