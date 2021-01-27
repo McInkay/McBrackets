@@ -1,8 +1,6 @@
 import Team from "./Team";
 import tw from "tailwind-styled-components";
 
-const RoundNames = ["round-of-32", "round-of-16", "quarter-final", "semi-final", "final"];
-
 const Container = tw.div`
     flex
     items-start
