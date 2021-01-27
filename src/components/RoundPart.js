@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 
 const Container = tw.div`
   grid
-  grid-cols-7
+  grid-cols-9
   h-50v
 `;
 
