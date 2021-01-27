@@ -7,6 +7,7 @@ function BracketView() {
     [["Meltan", "Bulbasaur"],["Greninja", "Torkoal"],["Charizard", "Pikachu"],["Tepig", "Snivy"]],
     [["Meltan", "Greninja"],["Charizard", "Snivy"]],
     [["Meltan"], ["Charizard"]],
+    [["Meltan"]]
   ];
 
   return (
