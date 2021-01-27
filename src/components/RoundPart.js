@@ -4,7 +4,7 @@ import tw from "tailwind-styled-components";
 const Container = tw.div`
   grid
   grid-cols-9
-  h-50v
+  gap-x-2
 `;
 
 function RoundPart({bracket}) {
@@ -13,7 +13,7 @@ function RoundPart({bracket}) {
       {bracket.map((round, level) => (
         <>
           {round.map((match, roundorder) => (
-            <Match team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} />
+            <Match key={match[0] + match[1]} team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} />
           ))}
         </>
       ))}
