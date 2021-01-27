@@ -8,7 +8,7 @@ const Container = tw.div`
     flex-col
     w-full
     ${({level, roundorder, total}) => `col-start-${roundorder < total / 2 ? 1 + level : 9 - level}`}
-    ${({level, roundorder, total}) => `row-start-${roundorder < total / 2 ? 1 + ((level + 1) * roundorder) : 1 + ((level + 1) * (roundorder - (total / 2)))}`}
+    ${({level, roundorder, total}) => `row-start-${roundorder < total / 2 ? 1 + ((level > 0 ? level * 2 : 1) * roundorder) : 1 + ((level > 0 ? level * 2 : 1) * (roundorder - (total / 2)))}`}
     ${({level}) => `row-span-${level < 3 ? level * 2 : "8"}`}
     self-center
 `;
