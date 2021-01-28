@@ -4,7 +4,7 @@ import "tailwindcss/tailwind.css";
 function App() {
   return (
     <div className="App">
-      <nav className="py-4 lg:px-6 border-solid border-b-2 border-gray-500">
+      <nav className="py-4 px-6 border-solid border-b-2 border-gray-500">
         <span className="font-semibold text-xl tracking-tight">McBrackets</span>
       </nav>
     
