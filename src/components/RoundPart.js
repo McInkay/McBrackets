@@ -8,8 +8,7 @@ const Container = tw.div`
   grid
   grid-cols-1
   sm:grid-cols-6
-  lg:grid-cols-11
-  gap-x-2
+  xl:grid-cols-11
   px-5
 `;
 

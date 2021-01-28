@@ -11,6 +11,7 @@ const Container = tw.div`
   w-full
   my-1
   flex
+  col-span-8
 `;
 
 const Name = tw.div`
