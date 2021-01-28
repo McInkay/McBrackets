@@ -10,7 +10,7 @@ const Container = tw.div`
   sm:grid-cols-6
   lg:grid-cols-11
   gap-x-2
-  p-2
+  px-5
 `;
 
 const Round = styled.div`
