@@ -6,10 +6,12 @@ const Container = tw.div`
     grid-cols-1
     content-around
     w-full
-    ${({level, roundorder, total}) => `col-start-${roundorder < total / 2 ? 1 + level : 11 - level}`}
-    ${({level, roundorder, total}) => `row-start-${roundorder < total / 2 ? 1 + ((level > 0 ? level * 2 : 1) * roundorder) : 1 + ((level > 0 ? level * 2 : 1) * (roundorder - (total / 2)))}`}
-    ${({level}) => `row-span-${level < 3 ? level * 2 : "8"}`}
-    self-center
+    ${({level, roundorder, total}) => `sm:col-start-${1 + level}`}
+    ${({level, roundorder, total}) => `sm:row-start-${level === 4 ? 1 + roundorder * 16 : 1 + (Math.pow(2, level + 1) * roundorder)}`}
+    ${({level}) => `sm:row-span-${level < 4 ? Math.pow(2, level + 1) : level === 4 ? "16" : "32"}`}
+    ${({level, roundorder, total}) => `lg:col-start-${roundorder < total / 2 ? 1 + level : 11 - level}`}
+    ${({level, roundorder, total}) => `lg:row-start-${roundorder < total / 2 ? 1 + (Math.pow(2, level + 1) * roundorder) : 1 + (Math.pow(2, level + 1) * (roundorder - (total / 2)))}`}
+    ${({level}) => `lg:row-span-${level < 4 ? Math.pow(2, level + 1) : "16"}`}
 `;
 
 function Match({team1, team2, level, roundorder, total}) {

@@ -2,7 +2,7 @@ import tw from "tailwind-styled-components";
 
 const Container = tw.div`
   border-2
-  border-gray-100
+  border-gray-500
   py-2
   transition
   duration-300
