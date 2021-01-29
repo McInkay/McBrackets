@@ -3,7 +3,7 @@ module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
     options: {
       safelist: {
-        standard: [/^(row|col)-(span|start)/]
+        standard: [/(row|col)-(span|start)/]
       }
     },
   },
