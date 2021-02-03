@@ -1,6 +1,5 @@
 import Match from "./Match";
 import tw from "tailwind-styled-components";
-import styled from "styled-components";
 import { useState } from "react";
 
 const RoundNames = ["round-of-32", "round-of-16", "quarter-final", "semi-final", "final", "winner"];
@@ -52,7 +51,7 @@ function RoundPart({bracket}) {
         <Round className={RoundNames[level]} key={RoundNames[level]} activeround={activeRound} level={level}>
           <RoundSwitcher>
             <BackButton onClick={previousRound} activeround={activeRound}>&lt;</BackButton>
-            <RoundName>{RoundNames[level].replace(/\-/g, " ")}</RoundName>
+            <RoundName>{RoundNames[level].replace(/-/g, " ")}</RoundName>
             <ForwardButton onClick={nextRound} activeround={activeRound} totalrounds={bracket.length}>&gt;</ForwardButton>
           </RoundSwitcher>
           {round.map((match, roundorder) => (
