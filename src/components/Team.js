@@ -18,9 +18,9 @@ const Name = tw.div`
   m-auto
 `;
 
-function Team({name}) {
+function Team({name, onClick}) {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <Name>{name}</Name>
     </Container>
   );

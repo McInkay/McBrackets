@@ -83,7 +83,15 @@ const ConnectorSpace = tw.div`
   row-span-2
 `;
 
-function Match({team1, team2, level, roundorder, total}) {
+function Match({team1, team2, level, roundorder, total, setTeam}) {
+  const selectTeam = (team) => {
+    if (team1 === "\u00a0" || team2 === "\u00a0") {
+      console.log("One of the teams isn't set yet");
+      return;
+    }
+
+    setTeam(team);
+  }
   return (
     <Container className="match" level={level} roundorder={roundorder} total={total}>
       
@@ -98,8 +106,8 @@ function Match({team1, team2, level, roundorder, total}) {
         </ConnectorsIncoming>
        }
       <Teams>
-        <Team name={team1}></Team>
-        {team2 && <Team name={team2}></Team>}
+        <Team name={team1} onClick={() => selectTeam(team1)}></Team>
+        {team2 && <Team name={team2} onClick={() => selectTeam(team2)}></Team>}
       </Teams>
       {team2 ?
         <ConnectorsOutgoing roundorder={roundorder} total={total}>

@@ -41,7 +41,7 @@ const ForwardButton = tw.button`
   col-start-10
 `;
 
-function RoundPart({bracket}) {
+function RoundPart({bracket, setTeam}) {
   const [activeRound, setRound] = useState(0);
   const previousRound = () => setRound(activeRound > 0 ? activeRound - 1 : activeRound);
   const nextRound = () => setRound(activeRound < bracket.length - 1 ? activeRound + 1 : activeRound);
@@ -55,7 +55,7 @@ function RoundPart({bracket}) {
             <ForwardButton onClick={nextRound} activeround={activeRound} totalrounds={bracket.length}>&gt;</ForwardButton>
           </RoundSwitcher>
           {round.map((match, roundorder) => (
-            <Match key={match[0] + match[1]} team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} />
+            <Match key={roundorder} team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} setTeam={(team) => setTeam(level, roundorder, team)} />
           ))}
         </Round>
       ))}
