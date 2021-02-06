@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RoundPart from "./RoundPart";
 
 const space = "\u00a0";
@@ -21,27 +21,29 @@ const setTeamFunc = (bracket, setBracket) => (round, match, team) => {
   setBracket(newBracket);
 }
 
+const setupBracket = (setBracket) => {
+  const startingRound = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22], [23, 24], [25, 26], [27, 28], [29, 30], [31, 32]];
+  const newBracket = [startingRound];
+  let numberInRound = startingRound.length;
+  while(numberInRound >= 1) {
+    numberInRound = numberInRound / 2;
+    let round;
+    if (numberInRound > 1) {
+      round = new Array(numberInRound).fill([space, space]);
+    } else if (numberInRound === 1) {
+      round = [[space], [space]];
+    } else {
+      round = [[space]];
+    }
+    newBracket.push(round);
+  }
+  setBracket(newBracket);
+}
+
 function BracketView() {
   const [bracket, setBracket] = useState([]);
   const setTeam = setTeamFunc(bracket, setBracket);
-  if (bracket.length === 0) {
-    const startingRound = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22], [23, 24], [25, 26], [27, 28], [29, 30], [31, 32]];
-    const newBracket = [startingRound];
-    let numberInRound = startingRound.length;
-    while(numberInRound >= 1) {
-      numberInRound = numberInRound / 2;
-      let round;
-      if (numberInRound > 1) {
-        round = new Array(numberInRound).fill([space, space]);
-      } else if (numberInRound === 1) {
-        round = [[space], [space]];
-      } else {
-        round = [[space]];
-      }
-      newBracket.push(round);
-    }
-    setBracket(newBracket);
-  }
+  useEffect(() => setupBracket(setBracket), []);
 
   return (
     <div className="bracket">
