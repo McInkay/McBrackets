@@ -9,7 +9,6 @@ const Container = tw.div`
   grid-cols-1
   sm:grid-cols-6
   xl:grid-cols-11
-  sm:px-5
 `;
 
 const Round = tw.div`

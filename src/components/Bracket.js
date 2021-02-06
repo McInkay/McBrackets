@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+import tw from "tailwind-styled-components";
 import RoundPart from "./RoundPart";
 
 const space = "\u00a0";
@@ -40,15 +42,62 @@ const setupBracket = (setBracket) => {
   setBracket(newBracket);
 }
 
+const Bracket = tw.div`
+  sm:px-5
+`;
+
+const NameInput = tw.input`
+  border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out mr-6
+  col-start-2
+`;
+
+const Submit = tw.button`
+  border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
+  col-start-3
+`;
+
+const ExportArea = styled(tw.div`
+  p-4
+  grid
+`)`
+  grid-template-columns: 1fr auto auto;
+`;
+
 function BracketView() {
   const [bracket, setBracket] = useState([]);
   const setTeam = setTeamFunc(bracket, setBracket);
+  const [name, setName] = useState("");
   useEffect(() => setupBracket(setBracket), []);
 
+  const exportBracket = () => {
+    let csv = name;
+    bracket.slice(1).forEach((round) => {
+      round.forEach((match) => {
+        match.forEach((team) => {
+          csv += `,${team}`;
+        })
+      });
+    });
+    downloadCSV(csv);
+  }
+
+  const downloadCSV = (csv) => {
+    const element = document.createElement("a");
+    const file = new Blob([csv], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "export.csv";
+    document.body.appendChild(element);
+    element.click();
+  }
+
   return (
-    <div className="bracket">
+    <Bracket>
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
-    </div>
+      <ExportArea>
+        <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name"/>
+        <Submit onClick={exportBracket} type="submit">Submit Predictions</Submit>
+      </ExportArea>
+    </Bracket>
   );
 }
 
