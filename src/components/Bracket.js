@@ -56,7 +56,7 @@ const Submit = tw.button`
   col-start-3
 `;
 
-const ExportArea = styled(tw.div`
+const ExportArea = styled(tw.form`
   p-4
   grid
 `)`
@@ -69,7 +69,8 @@ function BracketView() {
   const [name, setName] = useState("");
   useEffect(() => setupBracket(setBracket), []);
 
-  const exportBracket = () => {
+  const exportBracket = (e) => {
+    e.preventDefault()
     let csv = name;
     bracket.slice(1).forEach((round) => {
       round.forEach((match) => {
@@ -79,13 +80,24 @@ function BracketView() {
       });
     });
     downloadCSV(csv);
+    submit(csv);
+  }
+
+  const submit = (csv) => {
+    const formData = new FormData();
+    formData.append('csv', csv);
+    fetch('/', {
+      method: 'POST',
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString()
+    }).then((e) => console.log(e)).catch((error) => alert(error))
   }
 
   const downloadCSV = (csv) => {
     const element = document.createElement("a");
     const file = new Blob([csv], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "export.csv";
+    element.download = `${name}-predictions.csv`;
     document.body.appendChild(element);
     element.click();
   }
@@ -93,9 +105,9 @@ function BracketView() {
   return (
     <Bracket>
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
-      <ExportArea>
-        <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name"/>
-        <Submit onClick={exportBracket} type="submit">Submit Predictions</Submit>
+      <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
+          <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name"/>
+          <Submit onClick={exportBracket} type="submit">Submit Predictions</Submit>
       </ExportArea>
     </Bracket>
   );
