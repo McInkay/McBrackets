@@ -86,6 +86,7 @@ function BracketView() {
   const submit = (csv) => {
     const formData = new FormData();
     formData.append('csv', csv);
+    formData.append('form-name', 'csv-submit');
     fetch('/', {
       method: 'POST',
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
