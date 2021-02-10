@@ -76,12 +76,28 @@ const ExportArea = styled(tw.form`
 `;
 
 function BracketView() {
-  const [bracket, setBracket] = useState([]);
-  const setTeam = setTeamFunc(bracket, setBracket);
-  const [name, setName] = useState("");
-  useEffect(() => setupBracket(setBracket), []);
+  const [bracket, setBracket] = useState(
+    JSON.parse(localStorage.getItem('bracket')) || []
+  );
+  const changeBracket = (bracket) => {
+    if (!submitted) {
+      localStorage.setItem('bracket', JSON.stringify(bracket));
+      setBracket(bracket);
+    }
+  }
+  const [submitted, setSubmitted] = useState(
+    JSON.parse(localStorage.getItem('submitted')) || false
+  );
+  const changeSubmitted = (newVal) => {
+    localStorage.setItem('submitted', JSON.stringify(newVal));
+    setSubmitted(newVal);
+  }
 
-  const exportBracket = (e) => {
+  const setTeam = setTeamFunc(bracket, changeBracket);
+  const [name, setName] = useState("");
+  useEffect(() => bracket === [] && setupBracket(setBracket), [bracket]);
+
+  const submitBracket = (e) => {
     e.preventDefault()
     let csv = name;
     bracket.slice(1).forEach((round) => {
@@ -91,11 +107,10 @@ function BracketView() {
         })
       });
     });
-    downloadCSV(csv);
-    submit(csv);
+    email(csv);
   }
 
-  const submit = (csv) => {
+  const email = (csv) => {
     const formData = new FormData();
     formData.append('csv', csv);
     formData.append('form-name', 'csv-submit');
@@ -103,16 +118,11 @@ function BracketView() {
       method: 'POST',
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(formData).toString()
-    }).then((e) => console.log(e)).catch((error) => alert(error))
-  }
-
-  const downloadCSV = (csv) => {
-    const element = document.createElement("a");
-    const file = new Blob([csv], {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = `${name}-predictions.csv`;
-    document.body.appendChild(element);
-    element.click();
+    }).then((e) => {
+      if (e.status === 200 || e.status === 204) {
+        changeSubmitted(true);
+      }
+    }).catch((error) => alert(error))
   }
   
   const downloadImage = (e) => {
@@ -134,8 +144,8 @@ function BracketView() {
     <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
-          <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name"/>
-          <Submit onClick={exportBracket} type="submit">Submit Predictions</Submit>
+          {submitted || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name" />}
+          {submitted || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
           <Download onClick={downloadImage} type="submit">Download as Image</Download>
       </ExportArea>
     </Bracket>
