@@ -1,4 +1,6 @@
+import domtoimage from "dom-to-image";
 import { useEffect, useState } from "react";
+
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
 import RoundPart from "./RoundPart";
@@ -51,16 +53,26 @@ const NameInput = tw.input`
   col-start-2
 `;
 
-const Submit = tw.button`
+const Button = tw.button`
   border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
+`;
+
+const Submit = tw(Button)`
   col-start-3
+`;
+
+const Download = tw(Button)`
+  border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
+  col-start-4
+  hidden
+  sm:block
 `;
 
 const ExportArea = styled(tw.form`
   p-4
   grid
 `)`
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
 `;
 
 function BracketView() {
@@ -102,13 +114,29 @@ function BracketView() {
     document.body.appendChild(element);
     element.click();
   }
+  
+  const downloadImage = (e) => {
+    e.preventDefault()
+    const element = document.getElementById('bracket-for-image');
+    domtoimage.toPng(element)
+    .then(function (dataUrl) {
+        var a = document.createElement("a");
+        a.href = dataUrl;
+        a.download = "Image.png";
+        a.click();
+    })
+    .catch(function (error) {
+        console.error('oops, something went wrong!', error);
+    });
+  }
 
   return (
-    <Bracket>
+    <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
           <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name"/>
           <Submit onClick={exportBracket} type="submit">Submit Predictions</Submit>
+          <Download onClick={downloadImage} type="submit">Download as Image</Download>
       </ExportArea>
     </Bracket>
   );

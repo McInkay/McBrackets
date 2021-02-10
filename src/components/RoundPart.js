@@ -45,6 +45,7 @@ function RoundPart({bracket, setTeam}) {
   const previousRound = () => setRound(activeRound > 0 ? activeRound - 1 : activeRound);
   const nextRound = () => setRound(activeRound < bracket.length - 1 ? activeRound + 1 : activeRound);
   return (
+    <div id="bracket-for-image">
     <Container>
       {bracket.map((round, level) => (
         <Round className={RoundNames[level]} key={RoundNames[level]} activeround={activeRound} level={level}>
@@ -59,6 +60,7 @@ function RoundPart({bracket, setTeam}) {
         </Round>
       ))}
     </Container>
+    </div>
   );
 }
 
