@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@xstate/react": "^1.2.2",
     "autoprefixer": "^9.8.6",
     "dom-to-image": "^2.6.0",
     "postcss": "^7.0.35",
@@ -17,7 +18,8 @@
     "styled-components": "^5.2.1",
     "tailwind-styled-components": "^1.0.6",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "xstate": "^4.16.2"
   },
   "scripts": {
     "start": "craco start",

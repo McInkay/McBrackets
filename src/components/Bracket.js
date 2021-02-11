@@ -1,5 +1,7 @@
 import domtoimage from "dom-to-image";
 import { useEffect, useState } from "react";
+import { useMachine } from '@xstate/react';
+import { Machine } from 'xstate';
 
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
@@ -75,22 +77,45 @@ const ExportArea = styled(tw.form`
   grid-template-columns: 1fr auto auto auto;
 `;
 
+export const bracketMachine = Machine({
+  id: 'bracket',
+  initial: 'unsubmitted',
+  states: {
+    unsubmitted: {
+      on: { 
+        SUBMIT: {
+          target: 'submitted',
+          actions: ['save']
+        }
+      }
+    },
+    submitted: {}
+  },
+},
+{
+  actions: {
+    save: (_, __, data) => {
+      const jsonState = JSON.stringify(data.state);
+
+      try {
+        localStorage.setItem('submit-state', jsonState);
+      } catch (e) {}
+    },
+  }
+});
+
+const persistedState = JSON.parse(localStorage.getItem('submit-state')) || bracketMachine.initialState;
+
 function BracketView() {
+  const [state, send] = useMachine(bracketMachine, {state: persistedState});
   const [bracket, setBracket] = useState(
     JSON.parse(localStorage.getItem('bracket')) || []
   );
   const changeBracket = (bracket) => {
-    if (!submitted) {
+    if (state.matches('unsubmitted')) {
       localStorage.setItem('bracket', JSON.stringify(bracket));
       setBracket(bracket);
     }
-  }
-  const [submitted, setSubmitted] = useState(
-    JSON.parse(localStorage.getItem('submitted')) || false
-  );
-  const changeSubmitted = (newVal) => {
-    localStorage.setItem('submitted', JSON.stringify(newVal));
-    setSubmitted(newVal);
   }
 
   const setTeam = setTeamFunc(bracket, changeBracket);
@@ -120,7 +145,7 @@ function BracketView() {
       body: new URLSearchParams(formData).toString()
     }).then((e) => {
       if (e.status === 200 || e.status === 204) {
-        changeSubmitted(true);
+        send('SUBMIT');
       }
     }).catch((error) => alert(error))
   }
@@ -144,8 +169,8 @@ function BracketView() {
     <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
-          {submitted || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name" />}
-          {submitted || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
+          {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name" />}
+          {state.matches('submitted') || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
           <Download onClick={downloadImage} type="submit">Download as Image</Download>
       </ExportArea>
     </Bracket>
