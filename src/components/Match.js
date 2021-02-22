@@ -9,11 +9,11 @@ const Container = tw.div`
     content-around
     w-full
     ${({level, roundorder, total}) => `sm:col-start-${1 + level}`}
-    ${({level, roundorder, total}) => `sm:row-start-${level === 4 ? 1 + roundorder * 16 : 1 + (Math.pow(2, level + 1) * roundorder)}`}
-    ${({level}) => `sm:row-span-${level < 4 ? Math.pow(2, level + 1) : level === 4 ? "16" : "32"}`}
-    ${({level, roundorder, total}) => `xl:col-start-${roundorder < total / 2 ? 1 + level : 11 - level}`}
+    ${({level, roundorder, total}) => `sm:row-start-${level === 5 ? 1 + roundorder * 32 : 1 + (Math.pow(2, level + 1) * roundorder)}`}
+    ${({level}) => `sm:row-span-${level < 5 ? Math.pow(2, level + 1) : level === 5 ? "32" : "64"}`}
+    ${({level, roundorder, total}) => `xl:col-start-${roundorder < total / 2 ? 1 + level : 13 - level}`}
     ${({level, roundorder, total}) => `xl:row-start-${roundorder < total / 2 ? 1 + (Math.pow(2, level + 1) * roundorder) : 1 + (Math.pow(2, level + 1) * (roundorder - (total / 2)))}`}
-    ${({level}) => `xl:row-span-${level < 4 ? Math.pow(2, level + 1) : "16"}`}
+    ${({level}) => `xl:row-span-${level < 5 ? Math.pow(2, level + 1) : "32"}`}
 `;
 
 const Teams = tw.div`

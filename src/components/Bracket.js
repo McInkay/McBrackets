@@ -28,7 +28,40 @@ const setTeamFunc = (bracket, setBracket) => (round, match, team) => {
 }
 
 const setupBracket = (setBracket) => {
-  const startingRound = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22], [23, 24], [25, 26], [27, 28], [29, 30], [31, 32]];
+  const startingRound = [
+      ["Greninja","Dartrix"],
+      ["Blaziken","Frogadier"],
+      ["Pikachu","Quilladin"],
+      ["Typhlosion","Drizzile"],
+      ["Mudkip","Brionne"],
+      ["Sceptile","Servine"],
+      ["Infernape","Combusken"],
+      ["Rowlet","Pignite"],
+      ["Swampert","Torracat"],
+      ["Piplup","Froakie"],
+      ["Incineroar","Prinplup"],
+      ["Cyndaquil","Grotle"],
+      ["Decidueye","Chesnaught"],
+      ["Cinderace","Marshtomp"],
+      ["Totodile","Croconaw"],
+      ["Empoleon","Popplio"],
+      ["Torterra","Rillaboom"],
+      ["Primarina","Monferno"],
+      ["Serperior","Chespin"],
+      ["Treecko","Quilava"],
+      ["Oshawott","Fennekin"],
+      ["Inteleon","Thwackey"],
+      ["Scorbunny","Grookey"],
+      ["Torchic","Delphox"],
+      ["Grovyle","Braixen"],
+      ["Feraligatr","Tepig"],
+      ["Turtwig","Emboar"],
+      ["Chikorita","Dewott"],
+      ["Sobble","Bayleef"],
+      ["Snivy","Samurott"],
+      ["Raboot","Chimchar"],
+      ["Litten","Meganium"]
+  ];
   const newBracket = [startingRound];
   let numberInRound = startingRound.length;
   while(numberInRound >= 1) {
@@ -120,7 +153,7 @@ function BracketView() {
 
   const setTeam = setTeamFunc(bracket, changeBracket);
   const [name, setName] = useState("");
-  useEffect(() => bracket === [] && setupBracket(setBracket), [bracket]);
+  useEffect(() => bracket.length === 0 && setupBracket(setBracket), [bracket]);
 
   const submitBracket = (e) => {
     e.preventDefault()

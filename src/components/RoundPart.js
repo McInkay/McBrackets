@@ -2,13 +2,13 @@ import Match from "./Match";
 import tw from "tailwind-styled-components";
 import { useState } from "react";
 
-const RoundNames = ["round-of-32", "round-of-16", "quarter-final", "semi-final", "final", "winner"];
+const RoundNames = ["round-of-64", "round-of-32", "round-of-16", "quarter-final", "semi-final", "final", "winner"];
 
 const Container = tw.div`
   grid
   grid-cols-1
-  sm:grid-cols-6
-  xl:grid-cols-11
+  sm:grid-cols-7
+  xl:grid-cols-13
 `;
 
 const Round = tw.div`
