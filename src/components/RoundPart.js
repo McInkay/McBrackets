@@ -7,17 +7,17 @@ const RoundNames = ["round-of-64", "round-of-32", "round-of-16", "quarter-final"
 const Container = tw.div`
   grid
   grid-cols-1
-  sm:grid-cols-7
+  md:grid-cols-7
   xl:grid-cols-13
 `;
 
 const Round = tw.div`
-  sm:contents
+  md:contents
   ${({level, activeround}) => level !== activeround && 'hidden'}
 `;
 
 const RoundSwitcher = tw.div`
-  sm:hidden
+  md:hidden
   grid
   grid-flow-col
   grid-cols-10

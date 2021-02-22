@@ -80,7 +80,7 @@ const setupBracket = (setBracket) => {
 }
 
 const Bracket = tw.div`
-  sm:px-5
+  md:px-5
 `;
 
 const NameInput = tw.input`
@@ -100,7 +100,7 @@ const Download = tw(Button)`
   border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
   col-start-4
   hidden
-  sm:block
+  md:block
 `;
 
 const ExportArea = styled(tw.form`
