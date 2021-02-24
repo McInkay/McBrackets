@@ -85,7 +85,7 @@ const Bracket = tw.div`
 
 const NameInput = tw.input`
   border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out mr-6
-  col-start-2
+  col-start-3
 `;
 
 const Button = tw.button`
@@ -93,12 +93,16 @@ const Button = tw.button`
 `;
 
 const Submit = tw(Button)`
-  col-start-3
+  col-start-4
+`;
+
+const Clear = tw(Button)`
+  col-start-2
 `;
 
 const Download = tw(Button)`
   border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
-  col-start-4
+  col-start-5
   hidden
   md:block
 `;
@@ -107,7 +111,7 @@ const ExportArea = styled(tw.form`
   p-4
   grid
 `)`
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 1fr auto auto auto auto;
 `;
 
 export const bracketMachine = Machine({
@@ -156,7 +160,7 @@ function BracketView() {
   useEffect(() => bracket.length === 0 && setupBracket(setBracket), [bracket]);
 
   const submitBracket = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let csv = name;
     bracket.slice(1).forEach((round) => {
       round.forEach((match) => {
@@ -166,6 +170,11 @@ function BracketView() {
       });
     });
     email(csv);
+  }
+
+  const clearBracket = (e) => {
+    e.preventDefault();
+    setupBracket(changeBracket);
   }
 
   const email = (csv) => {
@@ -202,6 +211,7 @@ function BracketView() {
     <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
+          {state.matches('submitted') || <Clear onClick={clearBracket} type="submit">Clear All</Clear>}
           {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name" />}
           {state.matches('submitted') || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
           <Download onClick={downloadImage} type="submit">Download as Image</Download>
