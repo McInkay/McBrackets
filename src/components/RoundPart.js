@@ -6,14 +6,15 @@ const RoundNames = ["round-of-64", "round-of-32", "round-of-16", "quarter-final"
 
 const Container = tw.div`
   grid
-  grid-cols-1
+  grid-cols-2
   md:grid-cols-7
   xl:grid-cols-13
 `;
 
 const Round = tw.div`
+  ${({level, activeround}) => (level !== activeround && level !== activeround + 1) && 'hidden'}
+  contents
   md:contents
-  ${({level, activeround}) => level !== activeround && 'hidden'}
 `;
 
 const RoundSwitcher = tw.div`
@@ -21,6 +22,10 @@ const RoundSwitcher = tw.div`
   grid
   grid-flow-col
   grid-cols-10
+  ${({level, activeround}) => level !== activeround && 'hidden'}
+  col-start-1
+  row-start-1
+  col-span-1
 `;
 
 const RoundName = tw.div`
@@ -49,13 +54,13 @@ function RoundPart({bracket, setTeam}) {
     <Container>
       {bracket.map((round, level) => (
         <Round className={RoundNames[level]} key={RoundNames[level]} activeround={activeRound} level={level}>
-          <RoundSwitcher>
+          <RoundSwitcher activeround={activeRound} level={level}>
             <BackButton onClick={previousRound} activeround={activeRound}>&lt;</BackButton>
             <RoundName>{RoundNames[level].replace(/-/g, " ")}</RoundName>
             <ForwardButton onClick={nextRound} activeround={activeRound} totalrounds={bracket.length}>&gt;</ForwardButton>
           </RoundSwitcher>
           {round.map((match, roundorder) => (
-            <Match key={roundorder} team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} setTeam={(team) => setTeam(level, roundorder, team)} />
+            <Match key={roundorder} team1={match[0]} team2={match[1]} level={level} roundorder={roundorder} total={round.length} activeround={activeRound} setTeam={(team) => setTeam(level, roundorder, team)} />
           ))}
         </Round>
       ))}

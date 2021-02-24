@@ -8,9 +8,11 @@ const Container = tw.div`
     grid-rows-1
     content-around
     w-full
+    ${({level, roundorder, total, activeround}) => activeround === level ? 'col-start-1' : 'col-start-2'}
     ${({level, roundorder, total}) => `md:col-start-${1 + level}`}
+    ${({level, roundorder, total}) => `row-start-${level === 5 ? 2 + roundorder * 32 : 2 + (Math.pow(2, level + 1) * roundorder)}`}
     ${({level, roundorder, total}) => `md:row-start-${level === 5 ? 1 + roundorder * 32 : 1 + (Math.pow(2, level + 1) * roundorder)}`}
-    ${({level}) => `md:row-span-${level < 5 ? Math.pow(2, level + 1) : level === 5 ? "32" : "64"}`}
+    ${({level}) => `row-span-${level < 5 ? Math.pow(2, level + 1) : level === 5 ? "32" : "64"}`}
     ${({level, roundorder, total}) => `xl:col-start-${roundorder < total / 2 ? 1 + level : 13 - level}`}
     ${({level, roundorder, total}) => `xl:row-start-${roundorder < total / 2 ? 1 + (Math.pow(2, level + 1) * roundorder) : 1 + (Math.pow(2, level + 1) * (roundorder - (total / 2)))}`}
     ${({level}) => `xl:row-span-${level < 5 ? Math.pow(2, level + 1) : "32"}`}
@@ -48,18 +50,18 @@ const ConnectorTop = tw.div`
 const ConnectorTopFinal = tw.div`
   h-full
   border-t-2
-  md:row-span-2
+  row-span-2
   xl:row-span-1
-  md:border-r-2
+  border-r-2
   xl:border-r-0
 `;
 
 const ConnectorBottomFinal = tw.div`
   h-full
   border-b-2
-  md:row-span-2
+  row-span-2
   xl:border-b-0
-  md:border-r-2
+  border-r-2
   xl:border-r-0
 `;
 
@@ -83,7 +85,7 @@ const ConnectorSpace = tw.div`
   row-span-2
 `;
 
-function Match({team1, team2, level, roundorder, total, setTeam}) {
+function Match({team1, team2, level, roundorder, total, setTeam, activeround}) {
   const selectTeam = (team) => {
     if (team1 === "\u00a0" || team2 === "\u00a0") {
       console.log("One of the teams isn't set yet");
@@ -93,7 +95,7 @@ function Match({team1, team2, level, roundorder, total, setTeam}) {
     setTeam(team);
   }
   return (
-    <Container className="match" level={level} roundorder={roundorder} total={total}>
+    <Container className="match" level={level} roundorder={roundorder} total={total} activeround={activeround}>
       
       {team2 ? 
         <ConnectorsIncoming roundorder={roundorder} total={total}>
