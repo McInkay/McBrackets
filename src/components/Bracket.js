@@ -203,7 +203,7 @@ function BracketView() {
     .then(function (dataUrl) {
         var a = document.createElement("a");
         a.href = dataUrl;
-        a.download = "Image.png";
+        a.download = `${roundId}.png`;
         a.click();
     })
     .catch(function (error) {
