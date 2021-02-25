@@ -27,41 +27,44 @@ const setTeamFunc = (bracket, setBracket) => (round, match, team) => {
   setBracket(newBracket);
 }
 
+const startingRound = [
+  ["Greninja","Dartrix"],
+  ["Blaziken","Frogadier"],
+  ["Pikachu","Quilladin"],
+  ["Typhlosion","Drizzile"],
+  ["Mudkip","Brionne"],
+  ["Sceptile","Servine"],
+  ["Infernape","Combusken"],
+  ["Rowlet","Pignite"],
+  ["Swampert","Torracat"],
+  ["Piplup","Froakie"],
+  ["Incineroar","Prinplup"],
+  ["Cyndaquil","Grotle"],
+  ["Decidueye","Chesnaught"],
+  ["Cinderace","Marshtomp"],
+  ["Totodile","Croconaw"],
+  ["Empoleon","Popplio"],
+  ["Torterra","Rillaboom"],
+  ["Primarina","Monferno"],
+  ["Serperior","Chespin"],
+  ["Treecko","Quilava"],
+  ["Oshawott","Fennekin"],
+  ["Inteleon","Thwackey"],
+  ["Scorbunny","Grookey"],
+  ["Torchic","Delphox"],
+  ["Grovyle","Braixen"],
+  ["Feraligatr","Tepig"],
+  ["Turtwig","Emboar"],
+  ["Chikorita","Dewott"],
+  ["Sobble","Bayleef"],
+  ["Snivy","Samurott"],
+  ["Raboot","Chimchar"],
+  ["Litten","Meganium"]
+];
+
+const roundId = "ise-march-madness-2020";
+
 const setupBracket = (setBracket) => {
-  const startingRound = [
-      ["Greninja","Dartrix"],
-      ["Blaziken","Frogadier"],
-      ["Pikachu","Quilladin"],
-      ["Typhlosion","Drizzile"],
-      ["Mudkip","Brionne"],
-      ["Sceptile","Servine"],
-      ["Infernape","Combusken"],
-      ["Rowlet","Pignite"],
-      ["Swampert","Torracat"],
-      ["Piplup","Froakie"],
-      ["Incineroar","Prinplup"],
-      ["Cyndaquil","Grotle"],
-      ["Decidueye","Chesnaught"],
-      ["Cinderace","Marshtomp"],
-      ["Totodile","Croconaw"],
-      ["Empoleon","Popplio"],
-      ["Torterra","Rillaboom"],
-      ["Primarina","Monferno"],
-      ["Serperior","Chespin"],
-      ["Treecko","Quilava"],
-      ["Oshawott","Fennekin"],
-      ["Inteleon","Thwackey"],
-      ["Scorbunny","Grookey"],
-      ["Torchic","Delphox"],
-      ["Grovyle","Braixen"],
-      ["Feraligatr","Tepig"],
-      ["Turtwig","Emboar"],
-      ["Chikorita","Dewott"],
-      ["Sobble","Bayleef"],
-      ["Snivy","Samurott"],
-      ["Raboot","Chimchar"],
-      ["Litten","Meganium"]
-  ];
   const newBracket = [startingRound];
   let numberInRound = startingRound.length;
   while(numberInRound >= 1) {
@@ -135,22 +138,22 @@ export const bracketMachine = Machine({
       const jsonState = JSON.stringify(data.state);
 
       try {
-        localStorage.setItem('submit-state', jsonState);
+        localStorage.setItem(`submit-state-${roundId}`, jsonState);
       } catch (e) {}
     },
   }
 });
 
-const persistedState = JSON.parse(localStorage.getItem('submit-state')) || bracketMachine.initialState;
+const persistedState = JSON.parse(localStorage.getItem(`submit-state-${roundId}`)) || bracketMachine.initialState;
 
 function BracketView() {
   const [state, send] = useMachine(bracketMachine, {state: persistedState});
   const [bracket, setBracket] = useState(
-    JSON.parse(localStorage.getItem('bracket')) || []
+    JSON.parse(localStorage.getItem(`bracket-${roundId}`)) || []
   );
   const changeBracket = (bracket) => {
     if (state.matches('unsubmitted')) {
-      localStorage.setItem('bracket', JSON.stringify(bracket));
+      localStorage.setItem(`bracket-${roundId}`, JSON.stringify(bracket));
       setBracket(bracket);
     }
   }
