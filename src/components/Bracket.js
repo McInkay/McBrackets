@@ -63,6 +63,7 @@ const startingRound = [
 ];
 
 const roundId = "ise-march-madness-2020";
+const version = 1;
 
 const setupBracket = (setBracket) => {
   const newBracket = [startingRound];
@@ -138,22 +139,22 @@ export const bracketMachine = Machine({
       const jsonState = JSON.stringify(data.state);
 
       try {
-        localStorage.setItem(`submit-state-${roundId}`, jsonState);
+        localStorage.setItem(`submit-state-${roundId}-${version}`, jsonState);
       } catch (e) {}
     },
   }
 });
 
-const persistedState = JSON.parse(localStorage.getItem(`submit-state-${roundId}`)) || bracketMachine.initialState;
+const persistedState = JSON.parse(localStorage.getItem(`submit-state-${roundId}-${version}`)) || bracketMachine.initialState;
 
 function BracketView() {
   const [state, send] = useMachine(bracketMachine, {state: persistedState});
   const [bracket, setBracket] = useState(
-    JSON.parse(localStorage.getItem(`bracket-${roundId}`)) || []
+    JSON.parse(localStorage.getItem(`bracket-${roundId}-${version}`)) || []
   );
   const changeBracket = (bracket) => {
     if (state.matches('unsubmitted')) {
-      localStorage.setItem(`bracket-${roundId}`, JSON.stringify(bracket));
+      localStorage.setItem(`bracket-${roundId}-${version}`, JSON.stringify(bracket));
       setBracket(bracket);
     }
   }
