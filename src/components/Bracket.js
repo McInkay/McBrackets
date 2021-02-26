@@ -216,7 +216,7 @@ function BracketView() {
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
           {state.matches('submitted') || <Clear onClick={clearBracket} type="submit">Clear All</Clear>}
-          {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Name" name="name" />}
+          {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Slack Name" name="name" />}
           {state.matches('submitted') || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
           <Download onClick={downloadImage} type="submit">Download as Image</Download>
       </ExportArea>
