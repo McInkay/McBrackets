@@ -166,7 +166,6 @@ function BracketView() {
   const changeBracket = (bracket) => {
     localStorage.setItem(`bracket-${roundId}-${version}`, JSON.stringify(bracket));
     setBracket(bracket);
-    send('RESET');
   }
 
   const setTeam = setTeamFunc(bracket, changeBracket);
@@ -192,6 +191,7 @@ function BracketView() {
   const clearBracket = (e) => {
     e.preventDefault();
     setupBracket(changeBracket);
+    send('RESET');
   }
 
   const email = (csv) => {
