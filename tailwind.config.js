@@ -78,11 +78,16 @@ module.exports = {
         'span-16': 'span 16 / span 16',
         'span-32': 'span 32 / span 32',
         'span-64': 'span 64 / span 64',
-      }
+      },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      textColor: ['disabled'],
+      backgroundColor: ['disabled'],
+      borderColor: ['disabled'],
+      cursor: ['disabled']
+    },
   },
   plugins: [],
 }

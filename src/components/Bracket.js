@@ -93,7 +93,11 @@ const NameInput = tw.input`
 `;
 
 const Button = tw.button`
-  border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
+  border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out
+  
+  hover:bg-blue-500 hover:text-white
+  disabled:text-gray-500 disabled:border-gray-500 disabled:bg-transparent disabled:cursor-default
+  mr-6
 `;
 
 const Submit = tw(Button)`
@@ -171,6 +175,9 @@ function BracketView() {
 
   const submitBracket = (e) => {
     e.preventDefault();
+    if (!readyToSubmit()) {
+      return;
+    }
     let csv = name;
     bracket.slice(1).forEach((round) => {
       round.forEach((match) => {
@@ -217,13 +224,21 @@ function BracketView() {
     });
   }
 
+  const readyToSubmit = () => {
+    return bracket.every((round) => {
+      return round.every((match) => {
+        return match[0] !== space && match[1] !== space;
+      });
+    });
+  }
+
   return (
     <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
           <Clear onClick={clearBracket} type="submit">Reset</Clear>
           {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Slack Name" name="name" />}
-          {state.matches('submitted') || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
+          {state.matches('submitted') || <Submit onClick={submitBracket} type="submit" disabled={!readyToSubmit()}>Submit Predictions</Submit>}
           <Download onClick={downloadImage} type="submit">Download as Image</Download>
       </ExportArea>
     </Bracket>
