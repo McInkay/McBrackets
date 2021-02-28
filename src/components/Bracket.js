@@ -196,7 +196,7 @@ function BracketView() {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(formData).toString()
     }).then((e) => {
-      if (e.status === 200 || e.status === 404) {
+      if (e.status === 200 || e.status === 204) {
         send('SUBMIT');
       }
     }).catch((error) => alert(error))
