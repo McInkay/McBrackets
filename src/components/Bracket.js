@@ -130,7 +130,14 @@ export const bracketMachine = Machine({
         }
       }
     },
-    submitted: {}
+    submitted: {
+      on: {
+        RESET: {
+          target: 'unsubmitted',
+          actions: ['save']
+        }
+      }
+    }
   },
 },
 {
@@ -153,10 +160,9 @@ function BracketView() {
     JSON.parse(localStorage.getItem(`bracket-${roundId}-${version}`)) || []
   );
   const changeBracket = (bracket) => {
-    if (state.matches('unsubmitted')) {
-      localStorage.setItem(`bracket-${roundId}-${version}`, JSON.stringify(bracket));
-      setBracket(bracket);
-    }
+    localStorage.setItem(`bracket-${roundId}-${version}`, JSON.stringify(bracket));
+    setBracket(bracket);
+    send('RESET');
   }
 
   const setTeam = setTeamFunc(bracket, changeBracket);
@@ -190,7 +196,7 @@ function BracketView() {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(formData).toString()
     }).then((e) => {
-      if (e.status === 200 || e.status === 204) {
+      if (e.status === 200 || e.status === 404) {
         send('SUBMIT');
       }
     }).catch((error) => alert(error))
@@ -215,7 +221,7 @@ function BracketView() {
     <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
-          {state.matches('submitted') || <Clear onClick={clearBracket} type="submit">Clear All</Clear>}
+          <Clear onClick={clearBracket} type="submit">Reset</Clear>
           {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Slack Name" name="name" />}
           {state.matches('submitted') || <Submit onClick={submitBracket} type="submit">Submit Predictions</Submit>}
           <Download onClick={downloadImage} type="submit">Download as Image</Download>
