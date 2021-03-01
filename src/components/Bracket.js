@@ -237,7 +237,7 @@ function BracketView() {
       return round.every((match) => {
         return match[0] !== space && match[1] !== space;
       });
-    });
+    }) && name.trim();
   }
 
   const random = (e) => {
