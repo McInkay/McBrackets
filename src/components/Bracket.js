@@ -10,21 +10,25 @@ import RoundPart from "./RoundPart";
 const space = "\u00a0";
 
 const setTeamFunc = (bracket, setBracket) => (round, match, team) => {
+  setBracket(setTeamInBracket(bracket, round, match, team));
+}
+
+const setTeamInBracket = (bracket, round, match, team) => {
   const newBracket = JSON.parse(JSON.stringify(bracket));
-  if (round < bracket.length - 3) {
+  if (round < newBracket.length - 3) {
     // Normal round
     newBracket[round + 1][Math.floor(match / 2)][match % 2] = team;
-  } else if (round === bracket.length - 3) {
+  } else if (round === newBracket.length - 3) {
     // Clicking on a semi-finalist
     newBracket[round + 1][match % 2][0] = team;
-  } else if (round === bracket.length - 2) {
+  } else if (round === newBracket.length - 2) {
     // Clicking on a finalist
     newBracket[round + 1][0][0] = team;
   } else {
     // We have clicked on the winner
     return;
   }
-  setBracket(newBracket);
+  return newBracket;
 }
 
 const startingRound = [
@@ -89,7 +93,7 @@ const Bracket = tw.div`
 
 const NameInput = tw.input`
   border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out mr-6
-  col-start-3
+  col-start-4
 `;
 
 const Button = tw.button`
@@ -100,8 +104,12 @@ const Button = tw.button`
   mr-6
 `;
 
+const Random = tw(Button)`
+  col-start-3
+`;
+
 const Submit = tw(Button)`
-  col-start-4
+  col-start-5
 `;
 
 const Clear = tw(Button)`
@@ -110,7 +118,7 @@ const Clear = tw(Button)`
 
 const Download = tw(Button)`
   border-2 border-blue-500 font-bold text-blue-500 px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white mr-6
-  col-start-5
+  col-start-6
   hidden
   md:block
 `;
@@ -119,7 +127,7 @@ const ExportArea = styled(tw.form`
   p-4
   grid
 `)`
-  grid-template-columns: 1fr auto auto auto auto;
+  grid-template-columns: 1fr auto auto auto auto auto;
 `;
 
 export const bracketMachine = Machine({
@@ -232,14 +240,35 @@ function BracketView() {
     });
   }
 
+  const random = (e) => {
+    e.preventDefault();
+    let newBracket = JSON.parse(JSON.stringify(bracket));
+    for (let roundIdx = 0; roundIdx < newBracket.length - 1; roundIdx++) {
+      const round = newBracket[roundIdx];
+      if (roundIdx === 5) {
+        const winnerNum = Math.round(Math.random() * 1);
+        const winner = round[winnerNum][0];
+        newBracket = setTeamInBracket(newBracket, roundIdx, winnerNum, winner)
+      } else {
+        for (let matchIdx = 0; matchIdx < round.length; matchIdx++) {
+          const match = round[matchIdx];
+          const winner = match[Math.round(Math.random() * 1)];
+          newBracket = setTeamInBracket(newBracket, roundIdx, matchIdx, winner)
+        }
+      }
+    }
+    changeBracket(newBracket);
+  }
+
   return (
     <Bracket> 
       <RoundPart bracket={bracket} setTeam={setTeam}></RoundPart>
       <ExportArea name="submit" method="POST" data-netlify="true" id="submitForm">
-          <Clear onClick={clearBracket} type="submit">Reset</Clear>
+          <Clear onClick={clearBracket}>Reset</Clear>
+          {state.matches('submitted') || <Random onClick={random}>Random</Random>}
           {state.matches('submitted') || <NameInput onChange={(event) => setName(event.target.value)} value={name} placeholder="Slack Name" name="name" />}
           {state.matches('submitted') || <Submit onClick={submitBracket} type="submit" disabled={!readyToSubmit()}>Submit Predictions</Submit>}
-          <Download onClick={downloadImage} type="submit">Download as Image</Download>
+          <Download onClick={downloadImage}>Download as Image</Download>
       </ExportArea>
     </Bracket>
   );
